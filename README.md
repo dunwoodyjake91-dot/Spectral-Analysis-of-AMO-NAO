@@ -1,12 +1,12 @@
-\# Spectral Analysis of Modeled \& Observed NAO \& AMO
+Spectral Analysis of Modeled \& Observed NAO \& AMO
 
 
 
-This project compares modeled and observed records of the North Atlantic Oscillation (NAO) and Atlantic Multidecadal Oscillation (AMO) using spectral analysis. I am interested in multidecadal NAO variability with frequencies up to 100 years where record length permits, and decadal to multidecadal AMO variability. The goal is to identify timescales with higher spectral power and examine whether similar patterns appear in modeled and observed records. 
+This project compares modeled and observed records of the North Atlantic Oscillation (NAO) and Atlantic Multidecadal Oscillation (AMO) using spectral analysis. I am interested in multidecadal NAO variability with frequencies up to 100 years where record length permits, and decadal to multidecadal AMO variability. The goal is to identify timescales with higher spectral power and examine whether similar patterns appear in modeled and observed records.
 
 
 
-\## Data
+Data
 
 
 
@@ -20,7 +20,7 @@ Observed NAO and AMO indices are both obtained from NOAA's Physical Sciences Lab
 
 
 
-Modeled indices will be calculated from monthly output of the CCSM3 TraCE-21K-II simulation. It will cover approximately 22,000 years before present through 2000 AD. Sea level pressure (PSL) will be used to calculate NAO, and sea surface temperature (SST) will be used to calculate AMO. Both variables come from the same simulation.
+Modeled indices will be calculated from monthly output of the CCSM3 TraCE-21K-II simulation. It will span 22,000 years before present through 2000 AD. Sea level pressure (PSL) will be used to calculate NAO, and sea surface temperature (SST) will be used to calculate AMO. Both variables come from the same simulation.
 
 
 
@@ -32,7 +32,7 @@ Analysis will focus on the Holocene portion of the simulation. Shorter time wind
 
 
 
-\## Repository
+Repository
 
 
 
@@ -46,7 +46,7 @@ The analysis will be developed in Spyder and converted to an executed Jupyter no
 
 
 
-\## Model Reference
+Model Reference
 
 
 

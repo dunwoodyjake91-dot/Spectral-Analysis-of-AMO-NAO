@@ -1,0 +1,17 @@
+name: nao_amo_env
+channels:
+  - defaults
+dependencies:
+  - dask
+  - cftime
+  - netcdf4
+  - xarray
+  - pandas
+  - scipy
+  - jupytext
+  - numpy
+  - matplotlib
+  - python=3.11
+  - spyder
+  - jupyterlab
+prefix: C:\Users\dunwo\.conda\envs\nao_amo_env
