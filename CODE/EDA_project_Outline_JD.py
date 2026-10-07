@@ -185,3 +185,27 @@ plt.show()
 # The figure generated shows the spatial coverage and its pressure field.
 # Variability through time will be examined after extracting the pressure
 # records and calculating the modeled NAO index.
+
+
+# %% Extract modeled pressure at NAO parameters
+# Grab nearest grid cells across all months and convert Pa to hPa.
+# Longitude uses the model's 0 - 360E system.
+psl_gibraltar = (
+    psl_model["PSL"]
+    .sel(lat=36.14, lon=354.65, method="nearest")
+    .load() / 100)
+
+psl_reykjavik = (
+    psl_model["PSL"]
+    .sel(lat=64.15, lon=338.06, method="nearest")
+    .load() / 100)
+
+# Report selected grid locations, record lengths, and missing months.
+for name, record in [
+    ("Gibraltar", psl_gibraltar),
+    ("Reykjavik", psl_reykjavik)]:
+    print(
+        f"{name}: {record.lat.item():.2f}°N, "
+        f"{record.lon.item():.2f}°E | "
+        f"{record.size:,} months | "
+        f"{record.isnull().sum().item()} missing")
