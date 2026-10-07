@@ -201,11 +201,106 @@ psl_reykjavik = (
     .load() / 100)
 
 # Report selected grid locations, record lengths, and missing months.
-for name, record in [
-    ("Gibraltar", psl_gibraltar),
-    ("Reykjavik", psl_reykjavik)]:
-    print(
-        f"{name}: {record.lat.item():.2f}°N, "
-        f"{record.lon.item():.2f}°E | "
-        f"{record.size:,} months | "
-        f"{record.isnull().sum().item()} missing")
+#for name, record in [
+#    ("Gibraltar", psl_gibraltar),
+#    ("Reykjavik", psl_reykjavik)]:
+#    print(
+#        f"{name}: {record.lat.item():.2f}°N, "
+#        f"{record.lon.item():.2f}°E | "
+#        f"{record.size:,} months | "
+#        f"{record.isnull().sum().item()} missing")
+
+
+# %% Modeled pressure records through time
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.plot(psl_gibraltar.time, psl_gibraltar, linewidth=0.4, alpha=0.7, label="Near Gibraltar")
+ax.plot(psl_reykjavik.time, psl_reykjavik,linewidth=0.4, alpha=0.7, label="Near Reykjavik")
+ax.set(
+    title="TraCE-21K-II Monthly Pressure at NAO Reference Parameters",
+    xlabel="Model time (ka BP)",
+    ylabel="Sea level pressure (hPa)")
+ax.legend()
+fig.tight_layout()
+plt.show()
+
+# %% [markdown]
+# This figure shows monthly modeled sea level pressure at the nearest grid
+# cells to Gibraltar (35.26N, 3.75W) and Reykjavik (64.94N, 22.50W).
+# Each record contains 264,600 monthly values, equivalent to 22,050 years,
+# and with no missing values.
+#
+# Pressure is displayed in hPa.Plotting the full records produces
+# dense, overlapping layers that hide individual monthly fluctuations.
+# Long term pressure shifts are visible, mainly near Reykjavik.
+# These are the raw pressure records used to derive the modeled NAO index.
+
+
+# %% Inspect modeled sea surface temperature
+sst_model = xr.open_dataset(
+    data_folder / "TraCE-21K-II.monthly.TEMP.nc",
+    decode_times=False)
+
+#print(sst_model)
+#for name in sst_model.data_vars:
+#    print(name, sst_model[name].attrs)
+
+
+# %% Modeled SST: North Atlantic spatial coverage
+# Select the single upper-ocean level and final monthly field.
+sst_final = sst_model["TEMP"].isel(time=-1, z_t=0)
+fig, ax = plt.subplots(
+    figsize=(10, 6),
+    subplot_kw={"projection": ccrs.PlateCarree()})
+sst_final.plot.pcolormesh(
+    ax=ax,
+    x="TLONG",
+    y="TLAT",
+    transform=ccrs.PlateCarree(),
+    cmap="plasma",
+    cbar_kwargs={"label": "Sea surface temperature (°C)"})
+
+ax.set_extent([-100, 20, 0, 70], crs=ccrs.PlateCarree())
+ax.coastlines()
+ax.set_title("TraCE-21K-II: North Atlantic SST at the Last Time Step")
+fig.tight_layout()
+plt.show()
+
+
+# %% [markdown]
+# ## Modeled sea surface temperature: (showing spatial coverage)
+#
+# The TraCE-21K-II temperature dataset contains monthly mean potential
+# temperatures in degrees C. The selected layer is the uppermost
+# ocean layer, with its midpoint 4 meters below the surface, and is used
+# to represent modeled SST.
+#
+# This map shows the North Atlantic temperature distribution at the
+# last stored time step. It provides a check of spatial
+# coverage and temperature values before deriving a modeled AMO index.
+# The full field at this time step ranges from approximately -1.91 to
+# 31.84 degrees Celsius.
+# The ocean grid uses latitude and longitude coordinates.
+
+
+# %% [markdown]
+# ## EDA summary & future analysis plans
+#
+# This analysis examined the observed NAO and AMO indices
+# and the modeled pressure and ocean temperature fields from TraCE-21K-II.
+# The observed time series plots show variability in both indices and
+# the model maps show spatial coverage.
+#
+# The modeled pressure records were extracted near Gibraltar and Reykjavik.
+# The modeled temperature field inspected here has a plausible temperature range. 
+#These checks provide an initial look at the data before calculating model indexs.
+#
+# The next stage will derive a modeled NAO index from normalized pressure
+# differences and a modeled AMO index from North Atlantic SST anomalies.
+# Regional selection, area weighting, and treatment of long term trends
+# will be more specified during that analysis.
+#
+# Spectral analysis will investigate decadal and multidecadal variability
+# in AMO and explore NAO variability extending toward 100 year range if possible.
+# Long model records allow investigation of these periods, although
+# changing climate conditions may affect the final results. The shorter
+# observational record  will limit confidence that can be placed in long term trends.
